@@ -1,0 +1,11 @@
+<div class="cell-wrapper">
+  <md-grid-list [cols]="cms.amountCellsHorizontal" [rowHeight]="cms.getCellHeight()">
+    <md-grid-tile
+      *ngFor="let a of cms.dummyCellArr; index as i"
+      [colspan]="1"
+      [rowspan]="1"
+    >
+      <app-cell [state]="cms.getStatusOfCell(i)" [x]="cms.getCellPositionX(i)" [y]="cms.getCellPositionY(i)"></app-cell>
+    </md-grid-tile>
+  </md-grid-list>
+</div>

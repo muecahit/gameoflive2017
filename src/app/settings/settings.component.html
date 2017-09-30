@@ -1,0 +1,139 @@
+<button md-raised-button color="Basic" (click)="startEvolution()" [ngStyle]="{width: '100%'}">
+  {{cms.running ? 'Stop' : 'Start'}}
+</button>
+<md-accordion class="example-headers-align">
+  <md-expansion-panel hideToggle="true">
+
+    <md-expansion-panel-header>
+      <md-panel-title>
+        Anzahl Zellen
+      </md-panel-title>
+      <md-panel-description>
+        Anzahl in X und Y Richtung
+      </md-panel-description>
+    </md-expansion-panel-header>
+
+    <div [ngStyle]="panelStyle">
+      <md-grid-list cols="6" rowHeight="30">
+
+        <md-grid-tile colspan="2" rowspan="1">
+          <label for="x">Anz. X:</label>
+        </md-grid-tile>
+
+        <md-grid-tile colspan="1" rowspan="1">
+          <md-form-field>
+            <input #x mdInput type="number" min="10" max="50" id="x" (change)="onCellAmountChange(x, 'x')" value="10">
+          </md-form-field>
+        </md-grid-tile>
+
+        <md-grid-tile colspan="2" rowspan="1">
+          <label for="y">Anz. Y:</label>
+        </md-grid-tile>
+
+        <md-grid-tile colspan="1" rowspan="1">
+          <md-form-field>
+            <input #y mdInput type="number" min="10" max="50" id="y" (change)="onCellAmountChange(y, 'y')" value="10">
+          </md-form-field>
+        </md-grid-tile>
+      </md-grid-list>
+    </div>
+
+  </md-expansion-panel>
+
+  <md-expansion-panel hideToggle="true">
+    <md-expansion-panel-header>
+      <md-panel-title>
+        Zellenfarbe
+      </md-panel-title>
+      <md-panel-description>
+        Farben der toten und lebenden Zellen
+      </md-panel-description>
+    </md-expansion-panel-header>
+    <div [ngStyle]="panelStyle">
+
+      <md-grid-list cols="2" rowHeight="30" gutterSize="20">
+
+        <md-grid-tile colspan="1" rowspan="1" style="overflow: visible">
+          <label class="gol-color-label" for="col_alive">Lebendig</label>
+          <input [(colorPicker)]="cms.cellColorAlive"
+                 [style.background]="cms.cellColorAlive"
+                 [value]="cms.cellColorAlive"
+                 [cpOutputFormat]="'hex'"
+                 id="col_alive"/>
+        </md-grid-tile>
+
+        <md-grid-tile colspan="1" rowspan="1" style="overflow: visible">
+          <label class="gol-color-label" for="col_dead">Tot</label>
+          <input [(colorPicker)]="cms.cellColorDead"
+                 [style.background]="cms.cellColorDead"
+                 [value]="cms.cellColorDead"
+                 [cpOutputFormat]="'hex'"
+                 id="col_dead"/>
+        </md-grid-tile>
+
+      </md-grid-list>
+    </div>
+  </md-expansion-panel>
+
+  <md-expansion-panel hideToggle="true">
+    <md-expansion-panel-header>
+      <md-panel-title>
+        On Hover
+      </md-panel-title>
+      <md-panel-description>
+        Bei {{'<'}}STRG + Hover{{'>'}} Wiederbeleben oder Töten
+      </md-panel-description>
+    </md-expansion-panel-header>
+    <div [ngStyle]="panelStyle">
+
+      <md-radio-group [(ngModel)]="cms.onHoverChangeTo">
+        <md-radio-button [value]="1">
+          {{'Wiederbeleben'}}
+        </md-radio-button>
+        <md-radio-button [value]="0">
+          {{'Töten'}}
+        </md-radio-button>
+      </md-radio-group>
+    </div>
+  </md-expansion-panel>
+
+  <md-expansion-panel hideToggle="true" [disabled]="cms.running">
+    <md-expansion-panel-header>
+      <md-panel-title>
+        Evolution Typ Name
+      </md-panel-title>
+      <md-panel-description>
+        Wie sollen die neuen Stati errechnet werden?
+      </md-panel-description>
+    </md-expansion-panel-header>
+    <div [ngStyle]="panelStyle">
+
+      <md-radio-group [(ngModel)]="cms.selectedGenerationUpdatingPatternName" [disabled]="cms.running">
+        <md-radio-button *ngFor="let evo of getElolutionNames()" [value]="evo">
+          {{evo}}
+        </md-radio-button>
+      </md-radio-group>
+    </div>
+  </md-expansion-panel>
+
+  <md-expansion-panel hideToggle="true" [disabled]="cms.running">
+    <md-expansion-panel-header>
+      <md-panel-title>
+        Nächster Schritt Methode
+      </md-panel-title>
+      <md-panel-description>
+        Welche Regeln sollen für die Statusrechnung benutzt werden?
+      </md-panel-description>
+    </md-expansion-panel-header>
+
+    <div [ngStyle]="panelStyle">
+      <md-radio-group [(ngModel)]="cms.selectedNextStateMethodName" [disabled]="cms.running">
+        <md-radio-button *ngFor="let method of getNextStepMethodNames()" [value]="method">
+          {{method}}
+        </md-radio-button>
+      </md-radio-group>
+    </div>
+
+  </md-expansion-panel>
+
+</md-accordion>
